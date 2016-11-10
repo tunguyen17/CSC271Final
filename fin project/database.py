@@ -1,7 +1,7 @@
 import sqlite3
 import logging
 
-class database(object):
+class Database(object):
     #################   CONSTRUCTOR   #################
     #the input is a database
     def __init__(self, db):
@@ -98,7 +98,7 @@ class database(object):
 
 ### MAIN ###
 def main():
-    db = database('database/cup.db')
+    db = Database('database/cup.db')
     #db.insStudent('tanguyen17', 'Tu', 'Nguyen', 2017)
     #db.delStudent('tanguyen17')
     #db.insVisit('tanguyen17', '2016-11-13', '09:00', 1, 'Time Management', 'Nothing special')
