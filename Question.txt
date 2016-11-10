@@ -1,0 +1,2 @@
+Question:
+delete on CASCADE for visits and comments???

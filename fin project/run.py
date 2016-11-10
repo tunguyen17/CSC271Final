@@ -2,14 +2,18 @@ import sqlite3
 import logging
 
 class database(object):
-    #constructor for the database object
+    #################   CONSTRUCTOR   #################
     #the input is a database
     def __init__(self, db):
         #connect to db
         self.con = sqlite3.connect(db)
-
         #crusor object allow people to execute commands
         self.cur = self.con.cursor()
+
+    #################   DATABASE HANDELING   #################
+    #method to close the connection with database
+    def close(self):
+        self.con.close()
 
     #################   STUDENTS   #################
     #Insertion
@@ -67,11 +71,30 @@ class database(object):
             logging.warning(value)
             self.con.rollback()
 
+    #################   COMMENTS   #################
 
-    #################   DATABASE HANDELING   #################
-    #method to close the connection with database
-    def close(self):
-        self.con.close()
+    #Insertion
+    def insComment(self, ID, visit_date, visit_start, comment_date, comment_time, comments, observations, recommendations):
+        #data holder
+        data = [ID, visit_date, visit_start, comment_date, comment_time, comments, observations, recommendations]
+        #execute to update data
+        try:
+            self.cur.execute('insert into comments values(?,?,?,?,?,?,?,?)', data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+
+    #Deletion
+    def delComment(self, ID, visit_date, visit_start, comment_date, comment_time):
+        data = [ID, visit_date, visit_start, comment_date, comment_time]
+        try:
+            self.cur.execute('delete from comments where (ID = ?) and (visit_date = ?) and (visit_start = ?) and (comment_date = ?) and (comment_time = ?)' , data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+
 
 ### MAIN ###
 def main():
@@ -80,7 +103,9 @@ def main():
     #db.delStudent('tanguyen17')
     #db.insVisit('tanguyen17', '2016-11-13', '09:00', 1, 'Time Management', 'Nothing special')
     #db.delVisit('tanguyen17', '2016-11-13', '09:00')
-    db.cur.execute('select * from visits')
+    #db.insComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00', 'Good', 'ok', 'Nothing special')
+    #db.delComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00')
+    db.cur.execute('select * from comments')
 
     for i in db.cur:
         print i

@@ -28,5 +28,5 @@ create table comments(
   recommendations varchar(1000),
   primary key(ID, visit_date, visit_start, comment_date, comment_time),
   foreign key(ID) references students,
-  foreign key(visit_date, visit_start) references visits
+  foreign key(visit_date, visit_start) references visits ON UPDATE CASCADE -- automatic update when the visit_date and visit_start change
 );
