@@ -109,9 +109,10 @@ def main():
 
     for i in db.cur:
         print i
+
     ############################################################
     db.close()
 
-#execute the main method
+#Only execute the main menthod if the file is run directly
 if __name__ == '__main__':
     main()
