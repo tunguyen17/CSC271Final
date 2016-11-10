@@ -11,7 +11,8 @@ class database(object):
         #crusor object allow people to execute commands
         self.cur = self.con.cursor()
 
-    #method to add students
+    #################   STUDENTS   #################
+    #Insertion
     def insStudent(self, ID, first, last, year):
         #data holder
         data = [ID, first, last, year]
@@ -32,24 +33,54 @@ class database(object):
             #Unsuccessful update, rollback to earlier commit
             self.con.rollback()
 
+    #Deletion
     def delStudent(self, ID):
         data = [ID]
         try:
-            self.cur.execute('delete from students where ID = (?)', data)
+            self.cur.execute('delete from students where ID = ?', data)
             self.con.commit()
         except sqlite3.IntegrityError, value:
             logging.warning(value)
             self.con.rollback()
+
+    #################   VISITS   #################
+
+    #Insertion
+    def insVisit(self, ID, visit_date, visit_start, show, topic, note):
+        #data holder
+        data = [ID, visit_date, visit_start, show, topic, note]
+        #execute to update data
+        try:
+            self.cur.execute('insert into visits values(?,?,?,?,?,?)', data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+
+    #Deletion
+    def delVisit(self, ID, visit_date, visit_start):
+        data = [ID, visit_date, visit_start]
+        try:
+            self.cur.execute('delete from visits where (ID = ?) and (visit_date = ?) and (visit_start = ?)', data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+
+
+    #################   DATABASE HANDELING   #################
     #method to close the connection with database
     def close(self):
         self.con.close()
 
-#main method
+### MAIN ###
 def main():
     db = database('database/cup.db')
     #db.insStudent('tanguyen17', 'Tu', 'Nguyen', 2017)
     #db.delStudent('tanguyen17')
-    db.cur.execute('select * from students')
+    #db.insVisit('tanguyen17', '2016-11-13', '09:00', 1, 'Time Management', 'Nothing special')
+    #db.delVisit('tanguyen17', '2016-11-13', '09:00')
+    db.cur.execute('select * from visits')
 
     for i in db.cur:
         print i
