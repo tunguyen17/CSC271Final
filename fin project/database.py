@@ -5,15 +5,25 @@ class Database(object):
     #################   CONSTRUCTOR   #################
     #the input is a database
     def __init__(self, db):
-        #connect to db
+        ### CONNECT TO DB ####
         self.con = sqlite3.connect(db)
         #crusor object allow people to execute commands
         self.cur = self.con.cursor()
+
+        ### DATABASE ATTRIBUTE METADATA ####
+        self.meta = {'students': self.cur.execute('PRAGMA table_info("students")').fetchall(),\
+                    'visits': self.cur.execute('PRAGMA table_info("visits")').fetchall(),\
+                    'comments': self.cur.execute('PRAGMA table_info("comments")').fetchall(),}
 
     #################   DATABASE HANDELING   #################
     #method to close the connection with database
     def close(self):
         self.con.close()
+
+    def getAttributes(self, r):
+        #fletch the schema of the table to get the name of the attributes
+        self.cur.execute('PRAGMA table_info(students)')
+        return [col[1] for col in self.cur.fetchall()]
 
     #################   STUDENTS   #################
     #Insertion
