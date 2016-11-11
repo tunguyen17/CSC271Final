@@ -25,35 +25,35 @@ values ('frank17', 'Frank', 'Debbin', 2017);
 
 /*visits*/
 insert into visits
-values('hawkeye20', '2015-04-22', '14:22', 1,
+values('hawkeye20', '2015-04-22', '14:22', 'yes',
   'Time management', 'Need time for pledge ship');
 
 insert into visits
-values('bj17', '2015-04-24', '08:22', 0,
+values('bj17', '2015-04-24', '08:22', 'no',
   'Study Skills', 'Trouble with grammar');
 
 insert into visits
-values('rada20', '2015-09-30', '10:22', 1,
+values('rada20', '2015-09-30', '10:22', 'yes',
   'WIN', 'Nothing special');
 
 insert into visits
-values('serman18', '2015-06-02', '14:22', 1,
+values('serman18', '2015-06-02', '14:22', 'yes',
   'Warning Letter', 'N/A');
 
 insert into visits
-values('kelly19', '2016-07-02', '09:22', 0,
+values('kelly19', '2016-07-02', '09:22', 'no',
   'AHV', 'N/A');
 
 insert into visits
-values('max18', '2015-01-10', '09:22', 1,
+values('max18', '2015-01-10', '09:22', 'yes',
   'Writing Consulting', 'N/A');
 
 insert into visits
-  values('charles17', '2016-06-02', '14:22', 0,
+  values('charles17', '2016-06-02', '14:22', 'no',
     'Faculty', 'N/A');
 
 insert into visits
-  values('frank17', '2014-10-02', '10:22', 1,
+  values('frank17', '2014-10-02', '10:22', 'yes',
     'Other--See Recommendations', 'N/A');
 
 /*comments*/

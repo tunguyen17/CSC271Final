@@ -10,7 +10,7 @@ create table visits(
   ID varchar(50),
   visit_date date, --YYYY-MM-DD
   visit_start varchar(50), --HH:MM
-  show boolean not null, --If the student shows
+  show varchar(3) not null, --If the student shows
   topic varchar(100) not null,
   note varchar(500),
   primary key(ID, visit_date, visit_start),

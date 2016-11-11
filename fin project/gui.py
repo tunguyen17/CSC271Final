@@ -42,12 +42,13 @@ class Gui:
         self.tree.heading("#0", text="No.")
         #columb attributes
         for i in list_columns:
-            self.tree.column(i, minwidth=100)
+            self.tree.column(i, minwidth=20)
             self.tree.heading(i, text=i)
 
         ##Actual data
         data = db.fetchData(r)
         index = 1
+
         for row in data:
             self.tree.insert('', 'end', text=str(index), values=(row))
             index+=1
@@ -62,4 +63,4 @@ if __name__ == "__main__":
     #connecting with the database
     db = DB.Database('database/cup.db')
 
-    gui.draw_table(db, 'visits')
+    gui.draw_table(db, 'comments')
