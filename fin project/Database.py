@@ -11,6 +11,8 @@ class Database(object):
         self.cur = self.con.cursor()
 
         ### DATABASE ATTRIBUTE METADATA ####
+        self.relations = ['students', 'visits', 'comments']
+
         self.meta = {'students': self.cur.execute('PRAGMA table_info("students")').fetchall(),\
                     'visits': self.cur.execute('PRAGMA table_info("visits")').fetchall(),\
                     'comments': self.cur.execute('PRAGMA table_info("comments")').fetchall(),}
@@ -21,7 +23,10 @@ class Database(object):
         self.con.close()
 
     def fetchData(self, r):
-        return self.cur.execute('select * from students')
+        if r in self.relations: #checking if the input is a valid table
+            return self.cur.execute('select * from {}'.format(r)).fetchall()
+        else:
+            pass
 
     #################   STUDENTS   #################
     #Insertion

@@ -8,7 +8,7 @@ create table students(
 
 create table visits(
   ID varchar(50),
-  visit_date varchar(50), --YYYY-MM-DD
+  visit_date date, --YYYY-MM-DD
   visit_start varchar(50), --HH:MM
   show boolean not null, --If the student shows
   topic varchar(100) not null,
