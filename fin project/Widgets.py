@@ -2,14 +2,13 @@ import Tkinter as tk
 
 #selectable grid for the label
 class LabelWidget(tk.Entry):
-    def __init__(self, master, x, y, text):
+    def __init__(self, master, x, y, text, w = 8):
         self.text = tk.StringVar()
         self.text.set(text)
         tk.Entry.__init__(self, master=master)
-        self.config(textvariable=self.text, width=8,
+        self.config(textvariable=self.text, width=w,
                     relief="ridge",
-                    bg="#ffffff000", fg="#000000fff",
-                    readonlybackground="#ffffff000",
+                    fg="#000000fff",
                     justify='center',
                     state="readonly") #state = read only
         self.grid(column=x, row=y)
@@ -23,6 +22,9 @@ class LabelWidget(tk.Entry):
         self.icursor(tk.END) #bring the crusor to the end
         self.xview(tk.END) #bring the view to the end
 
+    def set(self, ms):
+        self.text.set(ms)
+
 
 #entry grid for something
 class EntryWidget(tk.Entry):
@@ -30,7 +32,7 @@ class EntryWidget(tk.Entry):
         tk.Entry.__init__(self, master=master)
         self.value = tk.StringVar()
         self.value.set(text)
-        self.config(textvariable=self.value, width=8,
+        self.config(textvariable=self.value, width=15,
                     relief="ridge",
                     bg="#ddddddddd", fg="#000000000",
                     justify='center')

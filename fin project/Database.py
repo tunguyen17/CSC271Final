@@ -49,6 +49,7 @@ class Database(object):
             '''
             #Unsuccessful update, rollback to earlier commit
             self.con.rollback()
+            raise Exception('Error!! Already Exists')
 
     #Deletion
     def delStudent(self, ID):
