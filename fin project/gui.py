@@ -1,6 +1,7 @@
 import Tkinter as tk
 import ttk
 import Database as DB
+import Widgets as wd
 
 class Gui:
     #################   CONSTRUCTOR   #################
