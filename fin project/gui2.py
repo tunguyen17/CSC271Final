@@ -64,4 +64,4 @@ if __name__ == "__main__":
     #connecting with the database
     db = DB.Database('database/cup.db')
 
-    gui.draw_table(db, 'comments')
+    gui.draw_table(db, 'visits')
