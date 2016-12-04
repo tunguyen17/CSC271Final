@@ -20,7 +20,7 @@ class NewVisit:
         idL = wd.LabelWidget(self.root, 0, 0, "ID")
         dateL = wd.LabelWidget(self.root, 0, 1, "Visit Date")
         startL = wd.LabelWidget(self.root, 0, 2, "Visit Start")
-        showL = wd.LabelWidget(self.root, 0, 3, "Show")
+        showL = wd.LabelWidget(self.root, 0, 3, "Show/No show")
         topicL = wd.LabelWidget(self.root, 0, 4, "Topic")
 
 
@@ -43,6 +43,7 @@ class NewVisit:
         noteL.grid(columnspan=2)
         noteE = wd.TextWidget(self.root, 0, 6, 150, 10, "Insert Note")
         noteE.grid(columnspan = 2)
+        oldNote = noteE.getVal() #store the old note for comparision later
 
 
         #Student Comments
@@ -51,6 +52,7 @@ class NewVisit:
         newComments.grid(columnspan = 2)
         comments = wd.TextWidget(self.root, 0, 8, 150, 10, "Insert Comments")
         comments.grid(columnspan = 2)
+        oldComments = comments.getVal() #store the old note for comparision later
 
         #observations
         newObservations = wd.LabelWidget(self.root, 0, 9, "Observations")
@@ -58,6 +60,7 @@ class NewVisit:
         newObservations.grid(columnspan = 2)
         observations = wd.TextWidget(self.root, 0, 10, 150, 10, "Insert Observations")
         observations.grid(columnspan = 2)
+        oldObservations = observations.getVal() #store the old note for comparision later
 
         #recommendations
         newRecommendations = wd.LabelWidget(self.root, 0, 11, "Recommendations")
@@ -65,6 +68,7 @@ class NewVisit:
         newRecommendations.grid(columnspan = 2)
         recommendations = wd.TextWidget(self.root, 0, 12, 150, 10, "Insert Recommendations")
         recommendations.grid(columnspan = 2)
+        oldRecommendations = observations.getVal() #store the old note for comparision later
 
         #Log display to the gui
         log = wd.LabelWidget(self.root, 0, 14, "Status", 30)
@@ -79,13 +83,13 @@ class NewVisit:
                 log.set("ID not found. Please insert student first!")
             else:
                 #Checking if any of the entry fields is empty
-                nt = "" if (len(noteE.getVal())== 12 and str(noteE.getVal())[0:11] == "Insert Note") else noteE.getVal()
+                nt = "" if oldNote == noteE.getVal() else noteE.getVal()
 
-                comm = "" if (len(comments.getVal())== 16 and str(comments.getVal())[0:15] == "Insert Comments") else comments.getVal()
+                comm = "" if oldComments == comments.getVal() else comments.getVal()
 
-                obs = "" if (len(observations.getVal())== 20 and str(observations.getVal())[0:19] == "Insert Observations") else observations.getVal()
+                obs = "" if oldObservations == observations.getVal() else observations.getVal()
 
-                rec = "" if (len(recommendations.getVal())== 23 and str(recommendations.getVal())[0:22] == "Insert Recommendations") else recommendations.getVal()
+                rec = "" if oldRecommendations == observations.getVal() else recommendations.getVal()
                 try:
                     #interaction witht the Database object
                     db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), nt, comm, obs, rec)

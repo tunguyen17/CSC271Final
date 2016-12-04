@@ -84,6 +84,9 @@ class TextWidget(tk.Text):
         'Get the value of the text'
         return self.get(1.0, tk.END) #1.0 first line, first character
 
+    def append(self, text):
+        self.insert(tk.END, text)
+
     def select_all(self, event):
         #select all the text
         self.tag_add(tk.SEL, "1.0", tk.END) #tag SEL as the staring 1.0 and the END
