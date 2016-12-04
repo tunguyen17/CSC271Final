@@ -12,15 +12,16 @@ class NewVisit:
 
         try:
             data = db.findVisit("hawkeye20", "2015-04-22", "14:22")[0]
-            stu = ' '.join(db.findStudent("hawkeye20")[0][1:3])
+            stuName = ' '.join(db.findStudent("hawkeye20")[0][1:3])
         except IndexError:
             data = ["N/A" for i in range(1, 10)]
+            stuName = "N/A"
         #create a root container
         self.root = tk.Tk()
         self.root.title("Visit's Comments")
 
         #upper part of the new comment Visit
-        name = wd.LabelWidget(self.root, 0, 0, data[0])
+        name = wd.LabelWidget(self.root, 0, 0, stuName)
         name.config(width = 20)
         #show no show
         showVar = tk.StringVar()
