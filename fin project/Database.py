@@ -118,6 +118,17 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
+    #Find visit
+    def findStudent(self, ID):
+        #execute to update data
+        try:
+            return self.cur.execute('select * from students where (ID = ?)', [ID]).fetchall()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            #raise exception for the GUI
+            raise Exception(value)
+
+
     #Deletion
     def delStudent(self, ID):
         'Student deletions. Input ID'
@@ -149,6 +160,18 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
+    #Find visit
+    def findVisit(self, ID, visit_date, visit_start):
+        #data holder
+        data = [ID, visit_date, visit_start]
+        #execute to update data
+        try:
+            return self.cur.execute('select * from visits where (ID = ?) and (visit_date = ?) and (visit_start = ?)', data).fetchall()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            #raise exception for the GUI
+            raise Exception(value)
+
     #Deletion
     def delVisit(self, ID, visit_date, visit_start):
         data = [ID, visit_date, visit_start]
@@ -176,7 +199,7 @@ class Database(object):
             self.con.rollback()
             #raise exception for the GUI
             raise Exception(value)
-            
+
     #Deletion
     def delComment(self, ID, visit_date, visit_start, comment_date, comment_time):
         data = [ID, visit_date, visit_start, comment_date, comment_time]
@@ -200,7 +223,7 @@ if __name__ == '__main__':
     #db.delVisit('tanguyen17', '2016-11-13', '09:00')
     #db.insComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00', 'Good', 'ok', 'Nothing special')
     #db.delComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00')
-    db.cur.execute('select * from comments')
+    print db.findVisit("tanguyen17", "2016-9-20", "10:29")
 
     for i in db.cur:
         print i
