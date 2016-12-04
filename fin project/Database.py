@@ -144,9 +144,9 @@ class Database(object):
             raise Exception(value)
 
     #Find visit
-    def findVisit(self, ID, visit_date, visit_start):
+    def findVisit(self, keys):
         #data holder
-        data = [ID, visit_date, visit_start]
+        data = keys
         #execute to update data
         try:
             return self.cur.execute('select * from visits where (ID = ?) and (visit_date = ?) and (visit_start = ?)', data).fetchall()
@@ -158,18 +158,28 @@ class Database(object):
     #update visit
     def updateVisit(self, ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
         #data holder
-        data = [ID, ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations]
-        print data
-        ''''
+
+        keys = [ID, visit_date, visit_start]
+
+        data = [show, topic, note, comments, observations, recommendations]
+        dataCol = ["show", "topic", "note", "comments", "observations", "recommendations"]
+        """
         #execute to update data
         try:
-            return self.cur.execute('select * from visits where (ID = ?) and (visit_date = ?) and (visit_start = ?)', data).fetchall()
+            #Consider "visit_date" and "visit_start" because they are in primary key
+            if visit_date:
+                self.cur.execute('update visits\
+                                  set visit_date = \
+                                  where (ID = ?) and (visit_date = ?) and (visit_start = ?)', keys)
+
+            for i in range(len(data)):
+                if data[i]:
+
         except sqlite3.IntegrityError, value:
             logging.warning(value)
             #raise exception for the GUI
             raise Exception(value)
-        '''
-
+            """
     #Deletion
     def delVisit(self, ID, visit_date, visit_start):
         data = [ID, visit_date, visit_start]

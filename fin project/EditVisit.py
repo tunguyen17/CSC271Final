@@ -17,7 +17,8 @@ class NewVisit:
         #Fletching data from the given infomation
 
         try:
-            data = db.findVisit("hawkeye20", "2015-04-22", "14:22")[0]
+            keys = "hawkeye20", "2015-04-22", "14:22"
+            data = db.findVisit(keys)[0]
             stuName = ' '.join(db.findStudent("hawkeye20")[0][1:3])
         except IndexError:
             data = ["N/A" for i in range(1, 10)]
@@ -116,7 +117,7 @@ class NewVisit:
                 rec = False if oldRecommendations == observations.getVal() else recommendations.getVal()
 
 
-                db.updateVisit(data[0], dt, sta, showVar.get(), topicE.getVal(), nt, comm, obs, rec)
+                #db.updateVisit(keys, data[0], dt, sta, showVar.get(), topicE.getVal(), nt, comm, obs, rec)
 
                 log.set("Update Success")
             except Exception, value:
