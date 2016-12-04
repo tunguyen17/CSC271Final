@@ -129,7 +129,7 @@ class Database(object):
     #################   VISITS   #################
 
     #Insertion
-    def insVisit(self, ID, visit_date, visit_start, show, topic, note, comments = "", observations = "", recommendations = ""):
+    def insVisit(self, ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
         #data holder
         data = [ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations]
         #execute to update data
