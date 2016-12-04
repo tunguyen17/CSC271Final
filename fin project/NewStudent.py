@@ -26,16 +26,23 @@ class NewStudent:
         lastE = wd.EntryWidget(self.root, 1, 2, "Last")
         yearE = wd.EntryWidget(self.root, 1, 3, "Year")
 
+        yearL = wd.LabelWidget(self.root, 0, 4, "note")
+        yearL.grid(columnspan=2)
+        noteE = wd.TextWidget(self.root, 0, 5, 50, 10, "Insert Note")
+        noteE.grid(columnspan = 2)
+
         #Log display to the gui
-        log = wd.LabelWidget(self.root, 0, 5, "Status", 30)
+        log = wd.LabelWidget(self.root, 0, 7, "Status", 30)
         #having the log display to span 2 columns
         log.grid(columnspan = 2)
 
         def ins():
             'method to call for the Submit button'
             try:
+                #checking if the user had inserted any special note for each students
+                note = "" if (len(noteE.getVal())== 12 and str(noteE.getVal())[0:11] == "Insert Note") else noteE.getVal()
                 #interaction witht the Database object
-                db.insStudent(idE.getVal(), firstE.getVal(), lastE.getVal(), int(yearE.getVal()))
+                db.insStudent(idE.getVal(), firstE.getVal(), lastE.getVal(), int(yearE.getVal()), note)
                 #report that the insertion is success
                 log.set("Success")
             except Exception, value:
@@ -44,8 +51,7 @@ class NewStudent:
 
         #A Submit button
         submit = tk.Button(self.root, text="Submit", command = ins)
-        submit.grid(column = 1, row=4)
-
+        submit.grid(column = 0, row=6, columnspan = 2)
         #make the window appears
         self.root.mainloop()
 

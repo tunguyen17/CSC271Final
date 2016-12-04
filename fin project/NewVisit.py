@@ -34,25 +34,29 @@ class NewVisit:
         showE.deselect() #set the check button to offvalue
         showE.grid(column = 1, row=3)
         TopicE = wd.EntryWidget(self.root, 1, 4, "Topic")
+        TopicE.config(width = 50)
         noteE = wd.TextWidget(self.root, 0, 6, 100, 10, "Insert Note")
         noteE.grid(columnspan = 2)
 
         #Log display to the gui
         log = wd.LabelWidget(self.root, 0, 8, "Status", 30)
-        log.config(width = 100)
+        log.config(width = 80)
         #having the log display to span 2 columns
         log.grid(columnspan = 2)
 
         def ins():
             'method to call for the Submit button'
-            try:
-                #interaction witht the Database object
-                db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), noteE.getVal())
-                #report that the insertion is success
-                log.set("Success")
-            except Exception, value:
-                #If insertion fail, report to the Log display
-                log.set(value)
+            if idE.getVal() not in db.idList():
+                log.set("ID not found. Please insert student first!")
+            else:
+                try:
+                    #interaction witht the Database object
+                    db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), noteE.getVal())
+                    #report that the insertion is success
+                    log.set("Success")
+                except Exception, value:
+                    #If insertion fail, report to the Log display
+                    log.set(value)
 
         #A Submit button
         submit = tk.Button(self.root, text="Submit", command = ins)

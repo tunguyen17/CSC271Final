@@ -14,9 +14,9 @@ create table visits(
   show varchar(3) not null, --If the student shows | yes / no
   topic varchar(100) not null,
   note varchar(10000),
-  comments varchar(50000),
-  observations varchar(50000),
-  recommendations varchar(50000),
+  comments varchar(50000), --student comments
+  observations varchar(50000), --observations
+  recommendations varchar(50000), --reccomendation
   primary key(ID, visit_date, visit_start),
   foreign key(ID) references students
 );
