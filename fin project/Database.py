@@ -21,6 +21,7 @@ delComment
 
 import sqlite3
 import logging
+import time, datetime #this is for creating a new time stamp
 
 class Database(object):
     #################   CONSTRUCTOR   #################
@@ -93,16 +94,16 @@ class Database(object):
 
     #################   STUDENTS   #################
     #Insertion
-    def insStudent(self, ID, first, last, year):
+    def insStudent(self, ID, first, last, year, note):
         'Insert a new student. Inputs ID, first, last, year'
 
         #data holder
-        data = [ID, first, last, year]
+        data = [ID, first, last, year, note]
 
         #execute to update data
         try:
             #proccess data and insert new data into the database
-            self.cur.execute('insert into students values(?,?,?,?)', data)
+            self.cur.execute('insert into students values(?,?,?,?,?)', data)
             #commit the new name to the database
             self.con.commit()
         except sqlite3.IntegrityError, value:
@@ -128,6 +129,16 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
+    #Find All IDs
+    def idList(self):
+        #execute to update data
+        try:
+            return self.cur.execute('select ID from students').fetchall()[0]
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            #raise exception for the GUI
+            raise Exception(value)
+
 
     #Deletion
     def delStudent(self, ID):
@@ -147,12 +158,12 @@ class Database(object):
     #################   VISITS   #################
 
     #Insertion
-    def insVisit(self, ID, visit_date, visit_start, show, topic, note):
+    def insVisit(self, ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
         #data holder
-        data = [ID, visit_date, visit_start, show, topic, note]
+        data = [ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations]
         #execute to update data
         try:
-            self.cur.execute('insert into visits values(?,?,?,?,?,?)', data)
+            self.cur.execute('insert into visits values(?,?,?,?,?,?,?,?,?)', data)
             self.con.commit()
         except sqlite3.IntegrityError, value:
             logging.warning(value)
@@ -161,9 +172,9 @@ class Database(object):
             raise Exception(value)
 
     #Find visit
-    def findVisit(self, ID, visit_date, visit_start):
+    def findVisit(self, keys):
         #data holder
-        data = [ID, visit_date, visit_start]
+        data = keys
         #execute to update data
         try:
             return self.cur.execute('select * from visits where (ID = ?) and (visit_date = ?) and (visit_start = ?)', data).fetchall()
@@ -172,6 +183,31 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
+    #update visit
+    def updateVisit(self, ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
+        #data holder
+
+        keys = [ID, visit_date, visit_start]
+
+        data = [show, topic, note, comments, observations, recommendations]
+        dataCol = ["show", "topic", "note", "comments", "observations", "recommendations"]
+        """
+        #execute to update data
+        try:
+            #Consider "visit_date" and "visit_start" because they are in primary key
+            if visit_date:
+                self.cur.execute('update visits\
+                                  set visit_date = \
+                                  where (ID = ?) and (visit_date = ?) and (visit_start = ?)', keys)
+
+            for i in range(len(data)):
+                if data[i]:
+
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            #raise exception for the GUI
+            raise Exception(value)
+            """
     #Deletion
     def delVisit(self, ID, visit_date, visit_start):
         data = [ID, visit_date, visit_start]
@@ -212,6 +248,9 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
+    #Time Stamp
+    def getTimeStamp(self):
+        return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
 
 #Only execute the main menthod if the file is run directly
@@ -224,7 +263,7 @@ if __name__ == '__main__':
     #db.insComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00', 'Good', 'ok', 'Nothing special')
     #db.delComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00')
     print db.findVisit("tanguyen17", "2016-9-20", "10:29")
-
+    print db.getTimeStamp()
     for i in db.cur:
         print i
     ############################################################
