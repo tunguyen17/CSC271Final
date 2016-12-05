@@ -36,13 +36,16 @@ class NewVisit:
         TopicE = wd.EntryWidget(self.root, 1, 4, "Topic")
         TopicE.config(width = 50)
 
+        #time stamp for the new notes Student Comments
+        timeStamp = db.getTimeStamp()
 
         #lower part, display long text
         #Visit NOTE
         noteL = wd.LabelWidget(self.root, 0, 5, "Visit Note")
         noteL.grid(columnspan=2)
-        noteE = wd.TextWidget(self.root, 0, 6, 150, 10, "Insert Note")
+        noteE = wd.TextWidget(self.root, 0, 6, 150, 5, "")
         noteE.grid(columnspan = 2)
+        noteE.append(timeStamp + " -- ")
         oldNote = noteE.getVal() #store the old note for comparision later
 
 
@@ -50,24 +53,27 @@ class NewVisit:
         newComments = wd.LabelWidget(self.root, 0, 7, "Student comments")
         newComments.config(width = 50)
         newComments.grid(columnspan = 2)
-        comments = wd.TextWidget(self.root, 0, 8, 150, 10, "Insert Comments")
+        comments = wd.TextWidget(self.root, 0, 8, 150, 5, "")
         comments.grid(columnspan = 2)
+        comments.append(timeStamp + " -- ")
         oldComments = comments.getVal() #store the old note for comparision later
 
         #observations
         newObservations = wd.LabelWidget(self.root, 0, 9, "Observations")
         newObservations.config(width = 50)
         newObservations.grid(columnspan = 2)
-        observations = wd.TextWidget(self.root, 0, 10, 150, 10, "Insert Observations")
+        observations = wd.TextWidget(self.root, 0, 10, 150, 5, "")
         observations.grid(columnspan = 2)
+        observations.append(timeStamp + " -- ")
         oldObservations = observations.getVal() #store the old note for comparision later
 
         #recommendations
         newRecommendations = wd.LabelWidget(self.root, 0, 11, "Recommendations")
         newRecommendations.config(width = 50)
         newRecommendations.grid(columnspan = 2)
-        recommendations = wd.TextWidget(self.root, 0, 12, 150, 10, "Insert Recommendations")
+        recommendations = wd.TextWidget(self.root, 0, 12, 150, 5, "")
         recommendations.grid(columnspan = 2)
+        recommendations.append(timeStamp + " -- ")
         oldRecommendations = observations.getVal() #store the old note for comparision later
 
         #Log display to the gui
