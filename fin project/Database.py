@@ -22,6 +22,7 @@ delComment
 import sqlite3
 import logging
 import time, datetime #this is for creating a new time stamp
+from copy import deepcopy #for the duplication of tuples
 
 class Database(object):
     #################   CONSTRUCTOR   #################
@@ -184,30 +185,37 @@ class Database(object):
             raise Exception(value)
 
     #update visit
-    def updateVisit(self, ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
+    def updateVisit(self, keys, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
         #data holder
-
-        keys = [ID, visit_date, visit_start]
 
         data = [show, topic, note, comments, observations, recommendations]
         dataCol = ["show", "topic", "note", "comments", "observations", "recommendations"]
-        """
+
+        def updateTuple(attribute, data):
+            query = 'update visits set {att} = "{d}" where (ID = "{ide}") and (visit_date = "{v_d}") and (visit_start ="{v_s}")'.format(att = attribute, d = data, ide = keys[0], v_d = keys[1], v_s = keys[2])
+            #print query
+            self.cur.execute(query)
         #execute to update data
         try:
             #Consider "visit_date" and "visit_start" because they are in primary key
-            if visit_date:
-                self.cur.execute('update visits\
-                                  set visit_date = \
-                                  where (ID = ?) and (visit_date = ?) and (visit_start = ?)', keys)
+            updateTuple("visit_date", visit_date)
+            keys[1]= visit_date
 
+            updateTuple("visit_start", visit_start)
+            keys[2]= visit_start
+
+            #Modify data
             for i in range(len(data)):
                 if data[i]:
+                    updateTuple(dataCol[i], data[i])
 
+            #commit to the database
+            self.con.commit()
         except sqlite3.IntegrityError, value:
             logging.warning(value)
             #raise exception for the GUI
             raise Exception(value)
-            """
+            self.con.rollback()
     #Deletion
     def delVisit(self, ID, visit_date, visit_start):
         data = [ID, visit_date, visit_start]
