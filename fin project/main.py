@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import Database as DB
 from gui_search import *
 from gui_list import *
