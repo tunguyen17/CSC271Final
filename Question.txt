@@ -1,2 +1,4 @@
 Question:
 delete on CASCADE for visits and comments???
+
+No show preference is definite, option to not regard whether a student showed up is a possible improvement.

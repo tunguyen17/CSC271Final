@@ -65,6 +65,34 @@ class Database(object):
         else:
             pass
 
+
+    ###############   GENERAL QUERY   ##############
+    # search
+    def search_general(self, name, topic, dd, mm, yy, no_show):
+        'generic search for a student'
+
+        #data holder
+        data = [ID, first, last, year]
+
+        #execute to update data
+        try:
+            #proccess data and insert new data into the database
+            self.cur.execute('insert into students values(?,?,?,?)', data)
+            #commit the new name to the database
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            #print out the value
+            logging.warning(value)
+            '''
+                There are two types of IntegrityError
+                    UNIQUE : duplication of primary key
+                    NOT NULL: when input a None into the input of a none null attribute
+            '''
+            #Unsuccessful update, rollback to earlier commit
+            self.con.rollback()
+            #raise exception for the GUI
+            raise Exception(value)
+
     #################   STUDENTS   #################
     #Insertion
     def insStudent(self, ID, first, last, year, note):
