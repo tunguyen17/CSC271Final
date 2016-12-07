@@ -72,18 +72,38 @@ class Database(object):
     def search_general(self, name, topic, dd, mm, yy, no_show):
         'generic search for a student'
 
-        #data holder
-        data = ['%'+name+'%', '%'+topic+'%', dd, mm, yy, no_show]
+        name = '%'+name+'%'
+        topic = '%'+topic+'%'
 
         #execute to update data
         try:
-            if (topic + dd + mm + yy + no_show) == 'No':
+            if (topic + dd + mm + yy + no_show) == '%%No':
                 return self.cur.execute("select * from students where (first || \" \" || last) like ?", [name])
             else:
-                return self.cur.execute('select '\
-                    +'students.ID, first, last, year, visit_date, show,'\
-                    +'topic from students, visits where students.ID = visits.ID'\
-                    +'where (first || " " || last) like ?')
+                no_show = 'yes' if no_show == 'No' else 'no'
+                query = 'select '\
+                    +'students.ID, first, last, year, visit_date, show, topic '\
+                    +'from students, visits where students.ID = visits.ID and '\
+                    +"(first || \" \" || last) like ? and "\
+                    +'(topic like ?) and show = ?'
+                i_list = [name, topic, no_show]
+                if yy == '':
+                    return self.cur.execute(query, i_list)
+                else:
+                    query += " and strftime('%Y',visit_date) = ?"
+                    i_list.append(yy)
+                    if mm == '':
+                        return self.cur.execute(query, i_list)
+                    else:
+                        query += " and strftime('%m',visit_date) = ?"
+                        i_list.append(mm)
+                        if dd == '':
+                            return self.cur.execute(query, i_list)
+                        else:
+                            query += " and strftime('%d',visit_date) = ?"
+                            i_list.append(dd)
+                            return self.cur.execute(query, i_list)
+
             # test line
             # ret = self.cur.execute('select * from students')
         except sqlite3.IntegrityError, value:
@@ -282,7 +302,14 @@ if __name__ == '__main__':
     # for i in db.cur:
     #     print i
 
-    # db.search_general('','','','','','')
+    query = 'select '\
+        +'students.ID, first, last, year, visit_date, show, topic '\
+        +'from students, visits where students.ID = visits.ID' #\
+        # +"where ((first || \" \" || last) like ?) and"\
+        # +'(topic like ?)', [name, topic])
 
+    print query
+
+    db.cur.execute(query)
     ############################################################
     db.close()

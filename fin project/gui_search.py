@@ -33,7 +33,7 @@ class gui_search:
         topic_bar.config(width=20)
 
         #Date
-        date_label = wd.LabelWidget(self.root, 0, 3, "Y-MM-DD")
+        date_label = wd.LabelWidget(self.root, 0, 3, "Date (YMD)")
         mm_bar = wd.EntryWidget(self.root, 2, 3, "")
         dd_bar = wd.EntryWidget(self.root, 3, 3, "")
         yy_bar = wd.EntryWidget(self.root, 1, 3, "")
@@ -77,9 +77,10 @@ class gui_search:
                     mm_text, yy_text, noshow_val))
                 #report that the insertion is success
                 log.set("Success")
-            except Exception, value:
+            except Exception as err:
                 #If insertion fail, report to the Log display
-                print 'ERROR!', value
+                print 'ERROR!', err
+                raise err
                 log.set(value)
 
         def add_fn():
