@@ -5,19 +5,19 @@ import Widgets as wd
 
 class GuiList:
     #################   CONSTRUCTOR   #################
-    def __init__(self):
+    def __init__(self, top_lvl):
 
         #create container
-        self.root = tk.Tk()
+        self.root = tk.Toplevel(top_lvl)
         self.root.title("Search results")
 
         ##set weight to the grid so that it can take up more space
         tk.Grid.rowconfigure(self.root, 0, weight=1)
         tk.Grid.columnconfigure(self.root, 0, weight=1)
 
-    def draw_table(self, db, r):
+    def draw_table(self, data):
 
-        list_columns = [a[1] for a in db.meta[r]]
+        list_columns = [a[0] for a in data.description]
 
         ###  TREEVIEW INITIALIZATION AND CONFIGURATIONS  ###
         #create a tree view
@@ -45,16 +45,17 @@ class GuiList:
             self.tree.heading(i, text=i)
 
         ##Actual data
-        data = db.fetchData(r)
+        data = data.fetchall()
         index = 1
 
         for row in data:
             self.tree.insert('', 'end', text=str(index), values=(row))
             index+=1
 
+        self.root.grab_set()
 
         #make the window appears
-        self.root.mainloop()
+        # self.root.mainloop()
 
 if __name__ == "__main__":
     gui = GuiList()

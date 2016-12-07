@@ -1,6 +1,7 @@
 import Tkinter as tk
 import Database as DB
 import Widgets as wd
+import gui_list as gl
 
 class gui_search:
     'App for creating a new student in the database'
@@ -32,7 +33,7 @@ class gui_search:
         topic_bar.config(width=20)
 
         #Date
-        date_label = wd.LabelWidget(self.root, 0, 3, "Y-MM-DD")
+        date_label = wd.LabelWidget(self.root, 0, 3, "Date (YMD)")
         mm_bar = wd.EntryWidget(self.root, 2, 3, "")
         dd_bar = wd.EntryWidget(self.root, 3, 3, "")
         yy_bar = wd.EntryWidget(self.root, 1, 3, "")
@@ -65,13 +66,21 @@ class gui_search:
             dd_text = dd_bar.getVal()
             mm_text = mm_bar.getVal()
             yy_text = yy_bar.getVal()
+            noshow_val = show_var.get()
             try:
+                if (yy_text == '' and (mm_text + dd_text) != '') or \
+                    (mm_text == '' and dd_text != ''):
+                    raise ValueError('not a valid date!')
                 #interaction with the Database object
-                db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), noteE.getVal())
+                gl.GuiList(self.root).draw_table(\
+                    db.search_general(name_text, topic_text, dd_text,\
+                    mm_text, yy_text, noshow_val))
                 #report that the insertion is success
                 log.set("Success")
-            except Exception, value:
+            except Exception as err:
                 #If insertion fail, report to the Log display
+                print 'ERROR!', err
+                raise err
                 log.set(value)
 
         def add_fn():
@@ -91,6 +100,8 @@ class gui_search:
 
         add_button = tk.Button(self.root, text="Add Visit", command = add_fn)
         add_button.grid(column = 2, row=5, columnspan=2)
+
+        self.root.grab_set()
 
         #make the window appears
         self.root.mainloop()
