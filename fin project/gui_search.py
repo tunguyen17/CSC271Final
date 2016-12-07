@@ -72,7 +72,7 @@ class gui_search:
                     (mm_text == '' and dd_text != ''):
                     raise ValueError('not a valid date!')
                 #interaction with the Database object
-                gl.GuiList().draw_table(\
+                gl.GuiList(self.root).draw_table(\
                     db.search_general(name_text, topic_text, dd_text,\
                     mm_text, yy_text, noshow_val))
                 #report that the insertion is success
@@ -100,6 +100,8 @@ class gui_search:
 
         add_button = tk.Button(self.root, text="Add Visit", command = add_fn)
         add_button.grid(column = 2, row=5, columnspan=2)
+
+        self.root.grab_set()
 
         #make the window appears
         self.root.mainloop()

@@ -5,10 +5,10 @@ import Widgets as wd
 
 class GuiList:
     #################   CONSTRUCTOR   #################
-    def __init__(self):
+    def __init__(self, top_lvl):
 
         #create container
-        self.root = tk.Tk()
+        self.root = tk.Toplevel(top_lvl)
         self.root.title("Search results")
 
         ##set weight to the grid so that it can take up more space
@@ -52,9 +52,10 @@ class GuiList:
             self.tree.insert('', 'end', text=str(index), values=(row))
             index+=1
 
+        self.root.grab_set()
 
         #make the window appears
-        self.root.mainloop()
+        # self.root.mainloop()
 
 if __name__ == "__main__":
     gui = GuiList()
