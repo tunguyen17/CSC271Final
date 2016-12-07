@@ -1,6 +1,7 @@
 import Tkinter as tk
 import Database as DB
 import Widgets as wd
+import gui_list as gl
 
 class gui_search:
     'App for creating a new student in the database'
@@ -65,13 +66,20 @@ class gui_search:
             dd_text = dd_bar.getVal()
             mm_text = mm_bar.getVal()
             yy_text = yy_bar.getVal()
+            noshow_val = show_var.get()
             try:
+                if (yy_text == '' and (mm_text + dd_text) != '') or \
+                    (mm_text == '' and dd_text != ''):
+                    raise ValueError('not a valid date!')
                 #interaction with the Database object
-                db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), noteE.getVal())
+                gl.GuiList().draw_table(\
+                    db.search_general(name_text, topic_text, dd_text,\
+                    mm_text, yy_text, noshow_val))
                 #report that the insertion is success
                 log.set("Success")
             except Exception, value:
                 #If insertion fail, report to the Log display
+                print 'ERROR!', value
                 log.set(value)
 
         def add_fn():

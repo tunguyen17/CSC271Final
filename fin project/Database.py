@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 DATABASE library for the interaction with the database
 
@@ -52,7 +53,7 @@ class Database(object):
                     'visits': self.cur.execute('PRAGMA table_info("visits")').fetchall(),\
                     'comments': self.cur.execute('PRAGMA table_info("comments")').fetchall(),}
 
-    #################   DATABASE HANDELING   #################
+    #################   DATABASE HANDLING   #################
     #method to close the connection with database
     def close(self):
         self.con.close()
@@ -72,14 +73,19 @@ class Database(object):
         'generic search for a student'
 
         #data holder
-        data = [ID, first, last, year]
+        data = ['%'+name+'%', '%'+topic+'%', dd, mm, yy, no_show]
 
         #execute to update data
         try:
-            #proccess data and insert new data into the database
-            self.cur.execute('insert into students values(?,?,?,?)', data)
-            #commit the new name to the database
-            self.con.commit()
+            if (topic + dd + mm + yy + no_show) == 'No':
+                return self.cur.execute("select * from students where (first || \" \" || last) like ?", [name])
+            else:
+                return self.cur.execute('select '\
+                    +'students.ID, first, last, year, visit_date, show,'\
+                    +'topic from students, visits where students.ID = visits.ID'\
+                    +'where (first || " " || last) like ?')
+            # test line
+            # ret = self.cur.execute('select * from students')
         except sqlite3.IntegrityError, value:
             #print out the value
             logging.warning(value)
@@ -264,15 +270,19 @@ class Database(object):
 #Only execute the main menthod if the file is run directly
 if __name__ == '__main__':
     db = Database('database/cup.db')
-    #db.insStudent('tanguyen17', 'Tu', 'Nguyen', 2017)
-    #db.delStudent('tanguyen17')
-    #db.insVisit('tanguyen17', '2016-11-13', '09:00', 1, 'Time Management', 'Nothing special')
-    #db.delVisit('tanguyen17', '2016-11-13', '09:00')
-    #db.insComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00', 'Good', 'ok', 'Nothing special')
-    #db.delComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00')
-    print db.findVisit("tanguyen17", "2016-9-20", "10:29")
-    print db.getTimeStamp()
-    for i in db.cur:
-        print i
+    # db.insStudent('nntran17', 'Ngoc', 'Tran', 2017, '')
+    # db.delStudent('tanguyen17')
+    # db.insVisit('tanguyen17', '2016-11-13', '09:00', 1, 'Time Management', 'Nothing special')
+    # db.delVisit('tanguyen17', '2016-11-13', '09:00')
+    # db.insComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00', 'Good', 'ok', 'Nothing special')
+    # db.delComment('tanguyen17', '2016-11-13', '09:00', '2016-11-13', '10:00')
+    # print db.findVisit("tanguyen17", "2016-9-20", "10:29")
+
+    # print db.getTimeStamp()
+    # for i in db.cur:
+    #     print i
+
+    # db.search_general('','','','','','')
+
     ############################################################
     db.close()

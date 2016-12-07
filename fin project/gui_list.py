@@ -15,9 +15,9 @@ class GuiList:
         tk.Grid.rowconfigure(self.root, 0, weight=1)
         tk.Grid.columnconfigure(self.root, 0, weight=1)
 
-    def draw_table(self, db, r):
+    def draw_table(self, data):
 
-        list_columns = [a[1] for a in db.meta[r]]
+        list_columns = [a[0] for a in data.description]
 
         ###  TREEVIEW INITIALIZATION AND CONFIGURATIONS  ###
         #create a tree view
@@ -45,7 +45,7 @@ class GuiList:
             self.tree.heading(i, text=i)
 
         ##Actual data
-        data = db.fetchData(r)
+        data = data.fetchall()
         index = 1
 
         for row in data:
