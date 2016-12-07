@@ -157,4 +157,4 @@ class NewVisit:
 if __name__ == "__main__":
     #connecting with the database
     db = DB.Database('database/cup.db')
-    new = NewVisit(db, "charles17", "2016-06-02", "14:22")
+    new = NewVisit(db, "hawkeye20", "2015-04-22", "14:22")

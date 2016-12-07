@@ -1,6 +1,7 @@
 import Tkinter as tk
 import Database as DB
 import Widgets as wd
+import sys #for command line arguments
 
 class NewVisit:
     'App for creating a new student in the database'
@@ -116,5 +117,6 @@ class NewVisit:
 
 if __name__ == "__main__":
     #connecting with the database
+    print sys.argv
     db = DB.Database('database/cup.db')
     new = NewVisit(db)

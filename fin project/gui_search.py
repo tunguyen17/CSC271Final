@@ -81,13 +81,15 @@ class gui_search:
             dd_text = dd_bar.getVal()
             mm_text = mm_bar.getVal()
             yy_text = yy_bar.getVal()
+            date = yy_text + "-" + mm_text + '-' + dd_text
+            print date
             # TODO: IMPLEMENT ADD FUNCTION
 
         #A Submit button
         search_button = tk.Button(self.root, text="Search", command = search_fn)
         search_button.grid(column = 0, row=5, columnspan=2)
 
-        add_button = tk.Button(self.root, text="Add", command = add_fn)
+        add_button = tk.Button(self.root, text="Add Visit", command = add_fn)
         add_button.grid(column = 2, row=5, columnspan=2)
 
         #make the window appears
