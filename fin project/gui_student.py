@@ -40,8 +40,11 @@ class StudentList:
         #Visit NOTE
         noteL = wd.LabelWidget(self.root, 0, 1, "Student Note",25)
         noteL.grid(columnspan=5)
-        noteE = wd.TextWidget(self.root, 0, 2, 110, 10, self.id_cmt)
-        noteE.grid(columnspan=2)
+
+        noteE = wd.TextWidget(self.root, 0, 2, 150, 10, self.id_cmt, 4)
+        noteE.grid(columnspan=4)
+        timeStamp = db.getTimeStamp()
+        noteE.append(timeStamp + " -- ")
         oldNote = noteE.getVal() #store the old note for comparision later
 
 
@@ -102,10 +105,13 @@ class StudentList:
 
         def update_fn():
             'method to call for the update button'
-            new_cmt = noteE.getVal()
+            new_cmt = False if oldNote == noteE.getVal() else noteE.getVal()
             try:
                 #interaction witht the Database object
-                db.updateStudent(self.id_no, new_cmt)
+                if new_cmt:
+                    db.updateStudent(self.id_no, new_cmt)
+                else:
+                    pass #nothing chage, no update
                 #report that the insertion is success
                 log.set("Success")
             except Exception, value:

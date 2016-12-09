@@ -88,25 +88,22 @@ class NewVisit:
 
         def ins():
             'method to call for the Submit button'
-            if idE.getVal() not in db.idList():
-                log.set("ID not found. Please insert student first!")
-            else:
-                #Checking if any of the entry fields is empty
-                nt = "" if oldNote == noteE.getVal() else noteE.getVal()
+            #Checking if any of the entry fields is empty
+            nt = "" if oldNote == noteE.getVal() else noteE.getVal()
 
-                comm = "" if oldComments == comments.getVal() else comments.getVal()
+            comm = "" if oldComments == comments.getVal() else comments.getVal()
 
-                obs = "" if oldObservations == observations.getVal() else observations.getVal()
+            obs = "" if oldObservations == observations.getVal() else observations.getVal()
 
-                rec = "" if oldRecommendations == observations.getVal() else recommendations.getVal()
-                try:
-                    #interaction witht the Database object
-                    db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), nt, comm, obs, rec)
-                    #report that the insertion is success
-                    log.set("Success")
-                except Exception, value:
-                    #If insertion fail, report to the Log display
-                    log.set(value)
+            rec = "" if oldRecommendations == observations.getVal() else recommendations.getVal()
+            try:
+                #interaction witht the Database object
+                db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), nt, comm, obs, rec)
+                #report that the insertion is success
+                log.set("Success")
+            except Exception, value:
+                #If insertion fail, report to the Log display
+                log.set(value)
 
         #A Submit button
         submit = tk.Button(self.root, text="Submit", command = ins)

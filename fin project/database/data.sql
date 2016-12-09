@@ -1,27 +1,35 @@
 /*student*/
 insert into students
-values ('hawkeye20', 'Hawkeye', 'Marvel', 2020, 'This is a Test');
+values ('hawkeye20', 'Hawkeye', 'Marvel', 2020, 'This is a Test
+');
 
 insert into students
-values ('bj17', 'bj', 'McMan', 2017, 'This is a Test');
+values ('bj17', 'bj', 'McMan', 2017, 'This is a Test
+');
 
 insert into students
-values ('rada20', 'rada', 'wave', 2020, 'This is a Test');
+values ('rada20', 'rada', 'wave', 2020, 'This is a Test
+');
 
 insert into students
-values ('serman18', 'Serman', 'sea', 2018, 'This is a Test');
+values ('serman18', 'Serman', 'sea', 2018, 'This is a Test
+');
 
 insert into students
-values ('kelly19', 'Kelly', 'Clarson', 2019, 'This is a Test');
+values ('kelly19', 'Kelly', 'Clarson', 2019, 'This is a Test
+');
 
 insert into students
-values ('max18', 'Max', 'Gullible', 2018, 'This is a Test');
+values ('max18', 'Max', 'Gullible', 2018, 'This is a Test
+');
 
 insert into students
-values ('charles17', 'Charles', 'Angel', 2020, 'This is a Test');
+values ('charles17', 'Charles', 'Angel', 2020, 'This is a Test
+');
 
 insert into students
-values ('frank17', 'Frank', 'Debbin', 2017, 'This is a Test');
+values ('frank17', 'Frank', 'Debbin', 2017, 'This is a Test
+');
 
 /*visits*/
 insert into visits

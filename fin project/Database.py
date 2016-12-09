@@ -175,7 +175,7 @@ class Database(object):
 
     #Update
     def updateStudent(self, ID, comment):
-        data = [ID, comment]
+        data = [comment, ID]
         try:
             self.cur.execute('update students set note = ? where (ID = ?)', data)
             self.con.commit()

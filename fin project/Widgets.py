@@ -66,7 +66,7 @@ class EntryWidget(tk.Entry):
 
 class TextWidget(tk.Text):
     'Multi-line text entry'
-    def __init__(self, master, x, y, w, h,text = ""):
+    def __init__(self, master, x, y, w, h,text = "", sbx_pos = 2):
         'x and y are the grid position. w and h are the width and height of the text box'
         tk.Text.__init__(self, master=master, width = w, height = h)
         #insert the default value. 1.0 is the first position
@@ -75,7 +75,8 @@ class TextWidget(tk.Text):
 
         #scroll bars that are next to and under the text box
         sb = tk.Scrollbar(master=master, command=self.yview)
-        sb.grid(column = x+2, row = y, sticky='nswe')
+        self.configure(yscrollcommand=sb.set)#fix Scrollbar
+        sb.grid(column = x+sbx_pos, row = y, sticky='nswe')
 
         #enable select_all
         self.bind("<Command-Key-a>", self.select_all)

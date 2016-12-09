@@ -130,12 +130,10 @@ class EditVisit:
             'Method to delete a visit'
             try:
                 if tkMessageBox.askyesno("Warning", "Delete This Visit"):
+                    db.delVisit(keys[0], keys[1], keys[2])
                     log.set("Delete Success")
                     #wiping out displayed data
-                    ID.set("N/A")
-                    name.set("N/A")
-
-                    db.delVisit(keys[0], keys[1], keys[2])
+                    self.root.destroy()
                 else:
                     log.set("Delete Canceled")
             except Exception, value:
