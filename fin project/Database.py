@@ -173,6 +173,17 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
+    #Update
+    def updateStudent(self, ID, comment):
+        data = [ID, comment]
+        try:
+            self.cur.execute('update students set note = ? where (ID = ?)', data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+            #raise exception for the GUI
+            raise Exception(value)
 
     #Deletion
     def delStudent(self, ID):
@@ -212,6 +223,15 @@ class Database(object):
         #execute to update data
         try:
             return self.cur.execute('select * from visits where (ID = ?) and (visit_date = ?) and (visit_start = ?)', data).fetchall()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            #raise exception for the GUI
+            raise Exception(value)
+
+    def findVisit_student(self, id_no):
+        #execute to update data
+        try:
+            return self.cur.execute('select visit_date, visit_start, topic from visits where (ID = ?)', [id_no])
         except sqlite3.IntegrityError, value:
             logging.warning(value)
             #raise exception for the GUI
@@ -293,6 +313,10 @@ class Database(object):
     def getTimeStamp(self):
         return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
+    def getStudentComment(self, id_no):
+        student = self.findStudent(id_no)[0]
+        # print student
+        return student[4]
 
 #Only execute the main menthod if the file is run directly
 if __name__ == '__main__':
