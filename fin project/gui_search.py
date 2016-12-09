@@ -2,6 +2,7 @@ import Tkinter as tk
 import Database as DB
 import Widgets as wd
 import gui_list as gl
+import NewStudent as ns
 
 class gui_search:
     'App for creating a new student in the database'
@@ -13,7 +14,7 @@ class gui_search:
         '''
         #create a root container
         self.root = tk.Tk()
-        self.root.title("awesome app")
+        self.root.title("CSC-271 Database Concept App")
 
         #Labels: to the left of the window
         search_label = wd.LabelWidget(self.root, 0, 0, "Search Past Records or Add New")
@@ -44,15 +45,30 @@ class gui_search:
         dd_bar.config(width=4)
         yy_bar.config(width=7)
 
-        #check button for the show
         show_var = tk.StringVar()
         show_checkbox = tk.Checkbutton(self.root, variable=show_var, \
-            onvalue="Yes", offvalue = "No", text="No show")
+            onvalue="yes", offvalue = "no", text="No show")
         show_checkbox.deselect() #set the check button to offvalue
-        show_checkbox.grid(column = 0, row=4)
-        show_checkbox.grid(columnspan=4)
+        show_checkbox.grid(column = 2, row=4)
+        show_checkbox.grid(columnspan=2)
         # no_show_label = wd.LabelWidget(self.root, 0, 4, "No show")
         # no_show_label.grid(columnspan=3)
+        show_checkbox.config(state = tk.DISABLED)
+
+
+        showpref_var = tk.StringVar()
+        def prefchange():
+            if showpref_var.get() == 'yes':
+                show_checkbox.config(state = tk.ACTIVE)
+            else:
+                show_checkbox.config(state = tk.DISABLED)
+
+        #check button for the show preference
+        showpref_checkbox = tk.Checkbutton(self.root, variable=showpref_var, \
+            onvalue="yes", offvalue = "no", text="Show preference", command=prefchange)
+        showpref_checkbox.deselect() #set the check button to offvalue
+        showpref_checkbox.grid(column = 0, row=4)
+        showpref_checkbox.grid(columnspan=2)
 
         #Log display to the gui
         log = wd.LabelWidget(self.root, 0, 6, "Status")
@@ -68,13 +84,16 @@ class gui_search:
             dd_text = dd_bar.getVal()
             mm_text = mm_bar.getVal()
             yy_text = yy_bar.getVal()
-            noshow_val = show_var.get()
+            if showpref_var.get() == 'yes':
+                noshow_val = show_var.get()
+            else:
+                noshow_val = 'maybe'
             try:
                 if (yy_text == '' and (mm_text + dd_text) != '') or \
                     (mm_text == '' and dd_text != ''):
                     raise ValueError('not a valid date!')
                 #interaction with the Database object
-                gl.GuiList(self.root).draw_table(\
+                gl.GuiList(self.root).draw_table(db, \
                     db.search_general(name_text, topic_text, dd_text,\
                     mm_text, yy_text, noshow_val))
                 #report that the insertion is success
@@ -87,20 +106,13 @@ class gui_search:
 
         def add_fn():
             'method to call for the add button'
-            name_text = name_bar.getVal()
-            topic_text = topic_bar.getVal()
-            dd_text = dd_bar.getVal()
-            mm_text = mm_bar.getVal()
-            yy_text = yy_bar.getVal()
-            date = yy_text + "-" + mm_text + '-' + dd_text
-            print date
-            # TODO: IMPLEMENT ADD FUNCTION
+            ns.NewStudent(self.root, db)
 
         #A Submit button
         search_button = tk.Button(self.root, text="Search", command = search_fn)
         search_button.grid(column = 0, row=5, columnspan=2)
 
-        add_button = tk.Button(self.root, text="Add Visit", command = add_fn)
+        add_button = tk.Button(self.root, text="Add Student", command = add_fn)
         add_button.grid(column = 2, row=5, columnspan=2)
 
         self.root.grab_set()
