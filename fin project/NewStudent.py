@@ -5,13 +5,13 @@ import Widgets as wd
 class NewStudent:
     'App for creating a new student in the database'
     #################   CONSTRUCTOR   #################
-    def __init__(self, db):
+    def __init__(self, top_lvl, db):
         '''
         Initialize a gui for the insertion of students infomation'
         INPUT: db - the databse
         '''
         #create a root container
-        self.root = tk.Tk()
+        self.root = tk.Toplevel(top_lvl)
         self.root.title("New Student")
 
         #Labels: to the left of the window
@@ -21,14 +21,14 @@ class NewStudent:
         yearL = wd.LabelWidget(self.root, 0, 3, "Year")
 
         #Entries: to the right of the window
-        idE = wd.EntryWidget(self.root, 1, 0, "ID")
-        firstE = wd.EntryWidget(self.root, 1, 1, "First")
-        lastE = wd.EntryWidget(self.root, 1, 2, "Last")
-        yearE = wd.EntryWidget(self.root, 1, 3, "Year")
+        idE = wd.EntryWidget(self.root, 1, 0, "")
+        firstE = wd.EntryWidget(self.root, 1, 1, "")
+        lastE = wd.EntryWidget(self.root, 1, 2, "")
+        yearE = wd.EntryWidget(self.root, 1, 3, "")
 
         yearL = wd.LabelWidget(self.root, 0, 4, "note")
         yearL.grid(columnspan=2)
-        noteE = wd.TextWidget(self.root, 0, 5, 50, 10, "Insert Note")
+        noteE = wd.TextWidget(self.root, 0, 5, 50, 10, "")
         noteE.grid(columnspan = 2)
 
         #Log display to the gui
@@ -40,7 +40,7 @@ class NewStudent:
             'method to call for the Submit button'
             try:
                 #checking if the user had inserted any special note for each students
-                note = "" if (len(noteE.getVal())== 12 and str(noteE.getVal())[0:11] == "Insert Note") else noteE.getVal()
+                note = noteE.getVal()
                 #interaction witht the Database object
                 db.insStudent(idE.getVal(), firstE.getVal(), lastE.getVal(), int(yearE.getVal()), note)
                 #report that the insertion is success
@@ -52,8 +52,11 @@ class NewStudent:
         #A Submit button
         submit = tk.Button(self.root, text="Submit", command = ins)
         submit.grid(column = 0, row=6, columnspan = 2)
+
+        self.root.grab_set()
+
         #make the window appears
-        self.root.mainloop()
+        # self.root.mainloop()
 
 
 

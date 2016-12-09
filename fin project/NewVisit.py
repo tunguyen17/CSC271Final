@@ -6,13 +6,13 @@ import sys #for command line arguments
 class NewVisit:
     'App for creating a new student in the database'
     #################   CONSTRUCTOR   #################
-    def __init__(self, db):
+    def __init__(self, top_lvl, db):
         '''
         Initialize a gui for the insertion of students infomation'
         INPUT: db - the databse
         '''
         #create a root container
-        self.root = tk.Tk()
+        self.root = tk.Toplevel(top_lvl)
         self.root.title("New Visit")
 
         #upper parts : display crucial infomation
@@ -31,7 +31,7 @@ class NewVisit:
         startE = wd.EntryWidget(self.root, 1, 2, "HH:MM")
         #check button for the show
         showVar = tk.StringVar()
-        showE = tk.Checkbutton(self.root, variable=showVar, onvalue="Yes", offvalue = "No")
+        showE = tk.Checkbutton(self.root, variable=showVar, onvalue="yes", offvalue = "no")
         showE.deselect() #set the check button to offvalue
         showE.grid(column = 1, row=3)
         TopicE = wd.EntryWidget(self.root, 1, 4, "Topic")
@@ -110,8 +110,10 @@ class NewVisit:
         submit = tk.Button(self.root, text="Submit", command = ins)
         submit.grid(column = 0, row=13, columnspan=2)
 
+        self.root.grab_set()
+
         #make the window appears
-        self.root.mainloop()
+        # self.root.mainloop()
 
 
 

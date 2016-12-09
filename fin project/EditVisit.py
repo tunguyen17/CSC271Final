@@ -1,18 +1,20 @@
+#!/usr/bin/env python
+
 import Tkinter as tk
 import Database as DB
 import Widgets as wd
 import tkMessageBox
 
-class NewVisit:
+class EditVisit:
     'App for creating a new student in the database'
     #################   CONSTRUCTOR   #################
-    def __init__(self, db, idInput = "", visit_dateInput = "", visit_startInput = ""):
+    def __init__(self, db, top_lvl, idInput = "", visit_dateInput = "", visit_startInput = ""):
         '''
         Initialize a gui for the insertion of students infomation'
         INPUT: db - the databse
         '''
         #create a root container
-        self.root = tk.Tk()
+        self.root = tk.Toplevel(top_lvl)
         self.root.title("Edit Visit")
 
         #Fletching data from the given infomation
@@ -46,8 +48,8 @@ class NewVisit:
 
         #check button for the show
         showVar = tk.StringVar()
-        showE = tk.Checkbutton(self.root, variable=showVar, onvalue="Yes", offvalue = "No")
-        if data[3].lower() == "yes":
+        showE = tk.Checkbutton(self.root, variable=showVar, onvalue="yes", offvalue = "no")
+        if data[3] == "yes":
             showE.select()
         else:
             showE.deselect() #set the check button to offvalue
@@ -147,14 +149,14 @@ class NewVisit:
         submit = tk.Button(self.root, text="Update", command = update)
         submit.grid(column = 1, row=13)
 
-
+        self.root.grab_set()
 
         #make the window appears
-        self.root.mainloop()
+        # self.root.mainloop()
 
 
 
 if __name__ == "__main__":
     #connecting with the database
     db = DB.Database('database/cup.db')
-    new = NewVisit(db, "hawkeye20", "2015-04-22", "14:22")
+    new = EditVisit(db, "hawkeye20", "2015-04-22", "14:22")

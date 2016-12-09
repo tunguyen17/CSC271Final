@@ -77,16 +77,23 @@ class Database(object):
 
         #execute to update data
         try:
-            if (topic + dd + mm + yy + no_show) == '%%No':
+            if (topic + dd + mm + yy + no_show) == '%%maybe':
                 return self.cur.execute("select * from students where (first || \" \" || last) like ?", [name])
             else:
-                no_show = 'yes' if no_show == 'No' else 'no'
+                if topic == '%*%':
+                    topic = '%%'
                 query = 'select '\
-                    +'students.ID, first, last, year, visit_date, show, topic '\
+                    +'students.ID, first, last, year, visit_date, visit_start, show, topic '\
                     +'from students, visits where students.ID = visits.ID and '\
                     +"(first || \" \" || last) like ? and "\
-                    +'(topic like ?) and show = ?'
-                i_list = [name, topic, no_show]
+                    +'(topic like ?)'
+                i_list = [name, topic]
+
+                if no_show != 'maybe':
+                    no_show = 'yes' if no_show == 'no' else 'no'
+                    query += " and show = ?"
+                    i_list.append(no_show)
+
                 if yy == '':
                     return self.cur.execute(query, i_list)
                 else:

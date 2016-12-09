@@ -2,6 +2,7 @@ import Tkinter as tk
 import ttk
 import Database as DB
 import Widgets as wd
+import EditVisit as ev
 
 class GuiList:
     #################   CONSTRUCTOR   #################
@@ -9,13 +10,14 @@ class GuiList:
 
         #create container
         self.root = tk.Toplevel(top_lvl)
+        self.top_lvl = top_lvl
         self.root.title("Search results")
 
         ##set weight to the grid so that it can take up more space
         tk.Grid.rowconfigure(self.root, 0, weight=1)
         tk.Grid.columnconfigure(self.root, 0, weight=1)
 
-    def draw_table(self, data):
+    def draw_table(self, db, data):
 
         list_columns = [a[0] for a in data.description]
 
@@ -32,6 +34,28 @@ class GuiList:
         self.tree.grid(row=0, column=0, sticky=tk.N + tk.S + tk.E + tk.W,columnspan=8)
         self.ysb.grid(row=0, column=1, sticky=tk.N + tk.S)
         self.xsb.grid(row=1, column=0, sticky=tk.E + tk.W)
+        self.tree.selectmode = "browse"
+
+        def onDoubleClick(event):
+            item = self.tree.identify('item', event.x, event.y)
+            col_no = self.tree.identify_column(event.x)
+            if len(list_columns) == 8: # full tree
+                if col_no in ['#2', '#3']:
+                    pass
+                    # TODO: JONAH'S SCREEN
+                else:
+                    values = self.tree.item(item, "values")
+                    id_field = values[0]
+                    date_field = values[4]
+                    time_field = values[5]
+                    # print id_field, date_field, time_field
+                    self.root.destroy()
+                    ev.EditVisit(db, self.top_lvl, id_field, date_field, time_field)
+            elif len(list_columns) == 5: # name_only
+                pass
+                # TODO: JONAH'S SCREEN
+
+        self.tree.bind("<Double-1>", onDoubleClick)
 
         ###  DATA  ###
 
