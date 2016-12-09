@@ -6,6 +6,7 @@ import Widgets as wd
 import sqlite3
 import EditVisit as ev
 import NewVisit as nv
+import tkMessageBox
 
 class StudentList:
     'App for creating a new student in the database'
@@ -28,16 +29,18 @@ class StudentList:
         #upper parts : display crucial infomation
 
         #Labels: to the left of the window
-        dateL = wd.LabelWidget(self.root, 1, 0, self.id_name,50)
-        startL = wd.LabelWidget(self.root, 0, 0, self.id_no,25)
+        name_bar = wd.LabelWidget(self.root, 1, 0, self.id_name)
+        name_bar.config(width=50)
+        name_bar.grid(columnspan=2)
+        id_label = wd.LabelWidget(self.root, 0, 0, self.id_no,25)
 
 
 
         #lower part, display long text
         #Visit NOTE
         noteL = wd.LabelWidget(self.root, 0, 1, "Student Note",25)
-        noteL.grid(columnspan=4)
-        noteE = wd.TextWidget(self.root, 0, 2, 127, 10, self.id_cmt)
+        noteL.grid(columnspan=5)
+        noteE = wd.TextWidget(self.root, 0, 2, 110, 10, self.id_cmt)
         noteE.grid(columnspan=2)
         oldNote = noteE.getVal() #store the old note for comparision later
 
@@ -46,7 +49,7 @@ class StudentList:
         log = wd.LabelWidget(self.root, 0, 100, "Status", 30)
         log.config(width = 100)
         #having the log display to span 2 columns
-        log.grid(columnspan = 3)
+        log.grid(columnspan = 4)
 
         ### CLONED FROM TREEVIEW
         list_columns = [a[0] for a in data.description]
@@ -60,9 +63,9 @@ class StudentList:
         self.tree.configure(yscrollcommand=self.ysb.set, xscrollcommand=self.xsb.set)
 
         #make the table appears in grid
-        self.tree.grid(row=10, column=0, sticky=tk.N + tk.S + tk.E + tk.W, columnspan=3)
-        self.ysb.grid(row=10, column=4, sticky=tk.N + tk.S)
-        self.xsb.grid(row=11, column=0, sticky=tk.E + tk.W, columnspan=3)
+        self.tree.grid(row=10, column=0, sticky=tk.N + tk.S + tk.E + tk.W, columnspan=4)
+        self.ysb.grid(row=10, column=5, sticky=tk.N + tk.S)
+        self.xsb.grid(row=11, column=0, sticky=tk.E + tk.W, columnspan=4)
 
         def onDoubleClick(event):
             item = self.tree.identify('item', event.x, event.y)
@@ -98,10 +101,11 @@ class StudentList:
             index+=1
 
         def update_fn():
-            'method to call for the Submit button'
+            'method to call for the update button'
+            new_cmt = noteE.getVal()
             try:
                 #interaction witht the Database object
-                db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), nt, comm, obs, rec)
+                db.updateStudent(self.id_no, new_cmt)
                 #report that the insertion is success
                 log.set("Success")
             except Exception, value:
@@ -112,13 +116,23 @@ class StudentList:
         note_update = tk.Button(self.root, text="Update student", command = update_fn)
         note_update.grid(column = 0, row=9)
 
+        def delete_fn():
+            result = tkMessageBox.askquestion("Delete \""+self.id_name+"\"", "Are You Sure?", icon='warning')
+            if result == 'yes':
+                db.delStudent(self.id_no)
+                self.root.destroy()
+
+        #A Submit button
+        delete_button = tk.Button(self.root, text="Delete student", command = delete_fn)
+        delete_button.grid(column = 1, row=9)
+
         def new_fn():
             self.root.destroy()
             nv.NewVisit(db, top_lvl, self.id_no)
 
         #A Submit button
         new_button = tk.Button(self.root, text="New visit", command = new_fn)
-        new_button.grid(column = 1, row=9)
+        new_button.grid(column = 2, row=9)
 
         self.root.grab_set()
 

@@ -173,6 +173,17 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
+    #Update
+    def updateStudent(self, ID, comment):
+        data = [ID, comment]
+        try:
+            self.cur.execute('update students set note = ? where (ID = ?)', data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+            #raise exception for the GUI
+            raise Exception(value)
 
     #Deletion
     def delStudent(self, ID):
@@ -304,7 +315,7 @@ class Database(object):
 
     def getStudentComment(self, id_no):
         student = self.findStudent(id_no)[0]
-        print student
+        # print student
         return student[4]
 
 #Only execute the main menthod if the file is run directly
