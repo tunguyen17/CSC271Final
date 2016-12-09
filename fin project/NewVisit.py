@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import Tkinter as tk
 import Database as DB
 import Widgets as wd
@@ -6,12 +7,13 @@ import sys #for command line arguments
 class NewVisit:
     'App for creating a new student in the database'
     #################   CONSTRUCTOR   #################
-    def __init__(self, top_lvl, db):
+    def __init__(self, db, top_lvl, id_no):
         '''
         Initialize a gui for the insertion of students infomation'
         INPUT: db - the databse
         '''
         #create a root container
+        self.top_lvl = top_lvl
         self.root = tk.Toplevel(top_lvl)
         self.root.title("New Visit")
 
@@ -26,7 +28,7 @@ class NewVisit:
 
 
         #Entries: to the right of the window
-        idE = wd.EntryWidget(self.root, 1, 0, "ID")
+        idE = wd.EntryWidget(self.root, 1, 0, id_no)
         dateE = wd.EntryWidget(self.root, 1, 1, "YYYY-MM-DD")
         startE = wd.EntryWidget(self.root, 1, 2, "HH:MM")
         #check button for the show
@@ -121,4 +123,4 @@ if __name__ == "__main__":
     #connecting with the database
     print sys.argv
     db = DB.Database('database/cup.db')
-    new = NewVisit(db)
+    new = NewVisit(tk.Tk(), db)

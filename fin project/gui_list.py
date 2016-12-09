@@ -3,6 +3,7 @@ import ttk
 import Database as DB
 import Widgets as wd
 import EditVisit as ev
+import gui_student as gs
 
 class GuiList:
     #################   CONSTRUCTOR   #################
@@ -40,11 +41,13 @@ class GuiList:
             item = self.tree.identify('item', event.x, event.y)
             col_no = self.tree.identify_column(event.x)
             if len(list_columns) == 8: # full tree
+                values = self.tree.item(item, "values")
                 if col_no in ['#2', '#3']:
-                    pass
-                    # TODO: JONAH'S SCREEN
+                    name = values[1] + ' ' + values[2]
+                    id_field = values[0]
+                    self.root.destroy()
+                    gs.StudentList(db, self.top_lvl, [id_field, name, db.getStudentComment(id_field)], db.findVisit_student(id_field))
                 else:
-                    values = self.tree.item(item, "values")
                     id_field = values[0]
                     date_field = values[4]
                     time_field = values[5]
@@ -52,8 +55,11 @@ class GuiList:
                     self.root.destroy()
                     ev.EditVisit(db, self.top_lvl, id_field, date_field, time_field)
             elif len(list_columns) == 5: # name_only
-                pass
-                # TODO: JONAH'S SCREEN
+                values = self.tree.item(item, "values")
+                id_field = values[0]
+                name = values[1] + ' ' + values[2]
+                self.root.destroy()
+                gs.StudentList(db, self.top_lvl, [id_field, name, db.getStudentComment(id_field)], db.findVisit_student(id_field))
 
         self.tree.bind("<Double-1>", onDoubleClick)
 
