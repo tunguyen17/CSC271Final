@@ -46,11 +46,13 @@ class gui_search:
 
         #check button for the show
         show_var = tk.StringVar()
-        show_checkbox = tk.Checkbutton(self.root, variable=show_var, onvalue="Yes", offvalue = "No")
+        show_checkbox = tk.Checkbutton(self.root, variable=show_var, \
+            onvalue="Yes", offvalue = "No", text="No show")
         show_checkbox.deselect() #set the check button to offvalue
-        show_checkbox.grid(column = 2, row=4)
-        no_show_label = wd.LabelWidget(self.root, 0, 4, "No show")
-        no_show_label.grid(columnspan=3)
+        show_checkbox.grid(column = 0, row=4)
+        show_checkbox.grid(columnspan=4)
+        # no_show_label = wd.LabelWidget(self.root, 0, 4, "No show")
+        # no_show_label.grid(columnspan=3)
 
         #Log display to the gui
         log = wd.LabelWidget(self.root, 0, 6, "Status")
@@ -80,8 +82,8 @@ class gui_search:
             except Exception as err:
                 #If insertion fail, report to the Log display
                 print 'ERROR!', err
-                raise err
-                log.set(value)
+                # raise err
+                log.set(str(err))
 
         def add_fn():
             'method to call for the add button'
