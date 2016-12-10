@@ -26,9 +26,10 @@ class NewVisit:
         showL = wd.LabelWidget(self.root, 0, 3, "Show/No show")
         topicL = wd.LabelWidget(self.root, 0, 4, "Topic")
 
+        idE = wd.LabelWidget(self.root, 1, 0, id_no)
+        idE.config(width = 30)
 
         #Entries: to the right of the window
-        idE = wd.EntryWidget(self.root, 1, 0, id_no)
         dateE = wd.EntryWidget(self.root, 1, 1, "YYYY-MM-DD")
         startE = wd.EntryWidget(self.root, 1, 2, "HH:MM")
         #check button for the show
