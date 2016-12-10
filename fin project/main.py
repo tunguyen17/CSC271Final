@@ -5,5 +5,5 @@ from gui_search import *
 from gui_list import *
 
 #connecting with the database
-db = DB.Database('database/cup.db')
+db = DB.Database('cup.db')
 new = gui_search(db)
