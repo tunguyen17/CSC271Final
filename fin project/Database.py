@@ -5,19 +5,6 @@ DATABASE library for the interaction with the database
 class database
 - used for setting up connection with the database
 - used for fletching, adding and updating data
-
-methods
-STUDENTS SCHEMA
-insStudent
-delStudent
-
-VISITS SCHEMA
-insVisit
-delVisit
-
-COMMENTS SCHEMA
-insComment
-delComment
 '''
 
 import sqlite3
@@ -34,7 +21,7 @@ class Database(object):
         input:
         - db: location of the .db file
 
-        Fields:
+        fields:
         - con : the connection to the database
         - cur : crusor object
         - relation : a list of relations of the database
@@ -56,21 +43,40 @@ class Database(object):
     #################   DATABASE HANDLING   #################
     #method to close the connection with database
     def close(self):
+        '''
+        Method to safely close the connection with database.
+        '''
         self.con.close()
 
     #fletch all data from table r
     def fetchData(self, r):
-        'fletch everything from relation r'
+        '''
+        Method to fetch data from relation r
+        input
+        - r: name of the relation (i.e. students, visits)
+        output:
+        - output tuples that contains data
+        '''
         if r in self.relations: #checking if the input is a valid table
             return self.cur.execute('select * from {}'.format(r)).fetchall()
         else:
+            #no relation is found. Return nothing
             pass
 
 
     ###############   GENERAL QUERY   ##############
     # search
     def search_general(self, name, topic, dd, mm, yy, no_show):
-        'generic search for a student'
+        '''
+        Generic search function for a student
+        inputs
+        - name: name of the student
+        - topic: topic of the visit
+        - dd: date
+        - nn: month
+        - yy: year
+        - no_show: 'yes' or 'no', indicating if the student show up or not
+        '''
 
         name = '%'+name+'%'
         topic = '%'+topic+'%'
@@ -129,7 +135,11 @@ class Database(object):
     #################   STUDENTS   #################
     #Insertion
     def insStudent(self, ID, first, last, year, note):
-        'Insert a new student. Inputs ID, first, last, year'
+        '''
+        Insert a new student.
+        inputs
+        - ID, first, last, year
+        '''
 
         #data holder
         data = [ID, first, last, year, note]
@@ -155,7 +165,14 @@ class Database(object):
 
     #Find visit
     def findStudent(self, ID):
-        #execute to update data
+        '''
+        Find a student using ID
+        input:
+        - ID: the unique ID that each student has
+        output:
+        - tuple that contain the infomation about the student
+            ((ID, first, last, year, note))
+        '''
         try:
             return self.cur.execute('select * from students where (ID = ?)', [ID]).fetchall()
         except sqlite3.IntegrityError, value:
@@ -165,7 +182,12 @@ class Database(object):
 
     #Find All IDs
     def idList(self):
-        #execute to update data
+        '''
+        Method to find all the IDs of the students in the database
+        output:
+        - tuple that contain all the IDs
+            (id1, id2, id3, ...)
+        '''
         try:
             return self.cur.execute('select ID from students').fetchall()[0]
         except sqlite3.IntegrityError, value:
@@ -174,8 +196,14 @@ class Database(object):
             raise Exception(value)
 
     #Update
-    def updateStudent(self, ID, comment):
-        data = [comment, ID]
+    def updateStudent(self, ID, note):
+        '''
+        Method to update student data
+        inputs:
+        - ID: unique ID of each student
+        - note: the updated note for each student
+        '''
+        data = [note, ID]
         try:
             self.cur.execute('update students set note = ? where (ID = ?)', data)
             self.con.commit()
@@ -187,8 +215,10 @@ class Database(object):
 
     #Deletion
     def delStudent(self, ID):
-        'Student deletions. Input ID'
-
+        '''
+        Method to delete a student
+        input: ID
+        '''
         data = [ID]
         try:
             self.cur.execute('delete from students where ID = ?', data)
@@ -204,6 +234,15 @@ class Database(object):
 
     #Insertion
     def insVisit(self, ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
+        '''
+        Method to insert a new visit
+        input:
+        - ID
+        - visit_date: YYYY-MM-DD
+        - visit_start: HH:MM
+        - show: yes/no
+        - topic, note, comments, observations, recommendations: strings
+        '''
         #data holder
         data = [ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations]
         #execute to update data
@@ -218,6 +257,14 @@ class Database(object):
 
     #Find visit
     def findVisit(self, keys):
+        '''
+        Method to find a visit
+        inputs
+        - key is a tuple that contains ID, visit_date, visit_date
+        output:
+        - a tuple that contain infomation for visits:
+          (ID, visit_date, visit_start, show, topic, note, comments, observations, recommendations)
+        '''
         #data holder
         data = keys
         #execute to update data
@@ -229,6 +276,13 @@ class Database(object):
             raise Exception(value)
 
     def findVisit_student(self, id_no):
+        '''
+        Method to find all the visit from a student
+        input:
+        - input the student's ID
+        output:
+        - output a tuple that contain all the visit_date and visit_start of the student with the given ID
+        '''
         #execute to update data
         try:
             return self.cur.execute('select visit_date, visit_start, topic from visits where (ID = ?)', [id_no])
@@ -239,6 +293,13 @@ class Database(object):
 
     #update visit
     def updateVisit(self, keys, visit_date, visit_start, show, topic, note, comments, observations, recommendations):
+        '''
+        Method to update the visit tuple
+        input:
+        - key: it contains the original keys (ID, visit_date, visit_start)
+        - visit_date, visit_start: two values might be different from the original.
+        - show, topic, note, comments, observations, recommendations: string
+        '''
         #data holder
 
         data = [show, topic, note, comments, observations, recommendations]
@@ -271,6 +332,13 @@ class Database(object):
             self.con.rollback()
     #Deletion
     def delVisit(self, ID, visit_date, visit_start):
+        '''
+        Method to delete a visit tuple
+        inputs:
+        - id: student's ID
+        - visit_date: YYYY-MM-DD
+        - visit_start: HH:MM
+        '''
         data = [ID, visit_date, visit_start]
         try:
             self.cur.execute('delete from visits where (ID = ?) and (visit_date = ?) and (visit_start = ?)', data)
@@ -281,36 +349,12 @@ class Database(object):
             #raise exception for the GUI
             raise Exception(value)
 
-    #################   COMMENTS   #################
-
-    #Insertion
-    def insComment(self, ID, visit_date, visit_start, comment_date, comment_time, comments, observations, recommendations):
-        #data holder
-        data = [ID, visit_date, visit_start, comment_date, comment_time, comments, observations, recommendations]
-        #execute to update data
-        try:
-            self.cur.execute('insert into comments values(?,?,?,?,?,?,?,?)', data)
-            self.con.commit()
-        except sqlite3.IntegrityError, value:
-            logging.warning(value)
-            self.con.rollback()
-            #raise exception for the GUI
-            raise Exception(value)
-
-    #Deletion
-    def delComment(self, ID, visit_date, visit_start, comment_date, comment_time):
-        data = [ID, visit_date, visit_start, comment_date, comment_time]
-        try:
-            self.cur.execute('delete from comments where (ID = ?) and (visit_date = ?) and (visit_start = ?) and (comment_date = ?) and (comment_time = ?)' , data)
-            self.con.commit()
-        except sqlite3.IntegrityError, value:
-            logging.warning(value)
-            self.con.rollback()
-            #raise exception for the GUI
-            raise Exception(value)
-
     #Time Stamp
     def getTimeStamp(self):
+        '''
+            Method to generate a timeStamp
+            output: YYYY-MM-DD:HH:MM:SS
+        '''
         return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
     def getStudentComment(self, id_no):

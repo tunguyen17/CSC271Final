@@ -1,4 +1,2 @@
-Question:
-delete on CASCADE for visits and comments???
+py2applet main.py icon.icns *
 
-No show preference is definite, option to not regard whether a student showed up is a possible improvement.
