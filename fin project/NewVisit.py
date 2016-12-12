@@ -5,17 +5,20 @@ import Widgets as wd
 import sys #for command line arguments
 
 class NewVisit:
-    'App for creating a new student in the database'
+    'App for creating a new visit in the database'
     #################   CONSTRUCTOR   #################
     def __init__(self, db, top_lvl, id_no):
         '''
         Initialize a gui for the insertion of students infomation'
-        INPUT: db - the databse
+        INPUT:
+            - top_lvl: the top level window
+            -db: the databse
         '''
         #create a root container
         self.top_lvl = top_lvl
         self.root = tk.Toplevel(top_lvl)
         self.root.title("New Visit")
+        self.id_no = id_no
 
         #upper parts : display crucial infomation
 
@@ -99,7 +102,7 @@ class NewVisit:
             rec = "" if oldRecommendations == observations.getVal() else recommendations.getVal()
             try:
                 #interaction witht the Database object
-                db.insVisit(idE.getVal(), dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), nt, comm, obs, rec)
+                db.insVisit(self.id_no, dateE.getVal(), startE.getVal(), showVar.get(), TopicE.getVal(), nt, comm, obs, rec)
                 #report that the insertion is success
                 log.set("Success")
             except Exception, value:

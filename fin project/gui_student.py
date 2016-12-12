@@ -9,12 +9,16 @@ import NewVisit as nv
 import tkMessageBox
 
 class StudentList:
-    'App for creating a new student in the database'
+    'App for displaying individual student infomation'
     #################   CONSTRUCTOR   #################
     def __init__(self, db, top_lvl, student_data, data):
         '''
         Initialize a gui for the insertion of students infomation'
-        INPUT: db - the databse
+        INPUT:
+            - db - the databse
+            - top_lvl: the top level window
+            - student_data: the infomation from the student table
+            - data: the visit infoamtion of the student
         '''
 
         self.id_no = student_data[0]

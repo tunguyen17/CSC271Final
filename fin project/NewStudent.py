@@ -9,7 +9,9 @@ class NewStudent:
     def __init__(self, top_lvl, db):
         '''
         Initialize a gui for the insertion of students infomation'
-        INPUT: db - the databse
+        INPUT:
+            - top_lvl the top_lvl window
+            -db - the databse
         '''
         #create a root container
         self.root = tk.Toplevel(top_lvl)

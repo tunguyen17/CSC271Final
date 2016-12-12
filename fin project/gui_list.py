@@ -8,7 +8,11 @@ import gui_student as gs
 class GuiList:
     #################   CONSTRUCTOR   #################
     def __init__(self, top_lvl):
-
+        '''
+        Method to create a window that contains a list for serach result display
+        Input:
+            top_lvl: the top level window
+        '''
         #create container
         self.root = tk.Toplevel(top_lvl)
         self.top_lvl = top_lvl
@@ -19,7 +23,12 @@ class GuiList:
         tk.Grid.columnconfigure(self.root, 0, weight=1)
 
     def draw_table(self, db, data):
-
+        '''
+            Method to draw a table with data. The typer
+            Input:
+                - db: the database
+                - data : contain the infomation of the data that we need
+        '''
         list_columns = [a[0] for a in data.description]
 
         ###  TREEVIEW INITIALIZATION AND CONFIGURATIONS  ###

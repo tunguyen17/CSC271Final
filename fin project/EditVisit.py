@@ -6,19 +6,23 @@ import Widgets as wd
 import tkMessageBox
 
 class EditVisit:
-    'App for creating a new student in the database'
+    'App for Editing a student visit in the database'
     #################   CONSTRUCTOR   #################
     def __init__(self, db, top_lvl, idInput = "", visit_dateInput = "", visit_startInput = ""):
         '''
         Initialize a gui for the insertion of students infomation'
-        INPUT: db - the databse
+        INPUT:
+            - db: the databse
+            - top_lvl: the top level window
+            - idInput: the student ID
+            - visit_dateInput: the date of the visit
+            - visit_startInput: the start time of the visit
         '''
         #create a root container
         self.root = tk.Toplevel(top_lvl)
         self.root.title("Edit Visit")
 
         #Fletching data from the given infomation
-
         try:
             keys = [idInput, visit_dateInput, visit_startInput]
             data = db.findVisit(keys)[0]
@@ -106,7 +110,7 @@ class EditVisit:
 
 
         def update():
-            'method to call for the Update button'
+            'Method to call for the Update button'
             try:
                 #interaction witht the Database object
 

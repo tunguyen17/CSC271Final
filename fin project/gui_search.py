@@ -5,7 +5,7 @@ import gui_list as gl
 import NewStudent as ns
 
 class gui_search:
-    'App for creating a new student in the database'
+    'App for creating searching window'
     #################   CONSTRUCTOR   #################
     def __init__(self, db):
         '''

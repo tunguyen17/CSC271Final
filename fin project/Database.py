@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-'''
-DATABASE library for the interaction with the database
-
-class database
-- used for setting up connection with the database
-- used for fletching, adding and updating data
-'''
-
 import sqlite3
 import logging
 import time, datetime #this is for creating a new time stamp
 from copy import deepcopy #for the duplication of tuples
 
 class Database(object):
+    '''
+    DATABASE library for the interaction with the database
+
+    class database
+    - used for setting up connection with the database
+    - used for fletching, adding and updating data
+    '''
     #################   CONSTRUCTOR   #################
     #the input is a database
     def __init__(self, db):
@@ -358,6 +357,10 @@ class Database(object):
         return datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
     def getStudentComment(self, id_no):
+        '''
+            Method to get the student comments
+            output: String
+        '''
         student = self.findStudent(id_no)[0]
         # print student
         return student[4]
