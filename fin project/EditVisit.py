@@ -59,7 +59,10 @@ class EditVisit:
             showE.deselect() #set the check button to offvalue
         showE.grid(column = 1, row=3)
 
-        topicE = wd.EntryWidget(self.root, 1, 4, data[4])
+        # topicE = wd.EntryWidget(self.root, 1, 4, data[4])
+        OPTIONS = [i[0] for i in db.getTopics()]
+        topicE = wd.OptionsWidget(self.root, OPTIONS ,1, 2)
+        topicE.variable.set(data[4])
         topicE.config(width = 50)
 
 

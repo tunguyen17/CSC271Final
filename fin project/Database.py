@@ -33,11 +33,11 @@ class Database(object):
 
         ### DATABASE ATTRIBUTE METADATA ####
         #Name of the relations
-        self.relations = ['students', 'visits', 'comments']
+        self.relations = ['students', 'visits', 'topics']
         #Meta data of each relations
         self.meta = {'students': self.cur.execute('PRAGMA table_info("students")').fetchall(),\
                     'visits': self.cur.execute('PRAGMA table_info("visits")').fetchall(),\
-                    'comments': self.cur.execute('PRAGMA table_info("comments")').fetchall(),}
+                    'topics': self.cur.execute('PRAGMA table_info("topics")').fetchall(),}
 
     #################   DATABASE HANDLING   #################
     #method to close the connection with database
@@ -365,9 +365,49 @@ class Database(object):
         # print student
         return student[4]
 
+    #################   VISITS   #################
+
+    #Insertion
+    def insTopic(self, topic):
+        '''
+        Method to insert a new visit
+        input:
+        - topic
+        '''
+        #data holder
+        data = [topic]
+        #execute to update data
+        try:
+            self.cur.execute('insert into topics values(?)', data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+            #raise exception for the GUI
+            raise Exception(value)
+
+    #Deletion
+    def delTopic(self, topic):
+        '''
+        Method to delete a visit tuple
+        inputs:
+        - topic
+        '''
+        data = [topic]
+        try:
+            self.cur.execute('delete from topics where (topic = ?)', data)
+            self.con.commit()
+        except sqlite3.IntegrityError, value:
+            logging.warning(value)
+            self.con.rollback()
+            #raise exception for the GUI
+            raise Exception(value)
+
+    def getTopics(self):
+        return self.fetchData('topics')
 #Only execute the main menthod if the file is run directly
 if __name__ == '__main__':
-    db = Database('database/cup.db')
+    db = Database('cup.db')
     # db.insStudent('nntran17', 'Ngoc', 'Tran', 2017, '')
     # db.delStudent('tanguyen17')
     # db.insVisit('tanguyen17', '2016-11-13', '09:00', 1, 'Time Management', 'Nothing special')
@@ -380,14 +420,14 @@ if __name__ == '__main__':
     # for i in db.cur:
     #     print i
 
-    query = 'select '\
-        +'students.ID, first, last, year, visit_date, show, topic '\
-        +'from students, visits where students.ID = visits.ID' #\
-        # +"where ((first || \" \" || last) like ?) and"\
-        # +'(topic like ?)', [name, topic])
+    # query = 'select '\
+    #     +'students.ID, first, last, year, visit_date, show, topic '\
+    #     +'from students, visits where students.ID = visits.ID' #\
+    #     # +"where ((first || \" \" || last) like ?) and"\
+    #     # +'(topic like ?)', [name, topic])
 
-    print query
+    print db.getTopics()
 
-    db.cur.execute(query)
+    # db.cur.execute(query)
     ############################################################
     db.close()

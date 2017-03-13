@@ -42,7 +42,10 @@ class NewVisit:
         showE = tk.Checkbutton(self.root, variable=showVar, onvalue="yes", offvalue = "no")
         showE.deselect() #set the check button to offvalue
         showE.grid(column = 1, row=3)
-        TopicE = wd.EntryWidget(self.root, 1, 4, "Topic")
+        OPTIONS = [i[0] for i in db.getTopics()]
+        TopicE = wd.OptionsWidget(self.root, OPTIONS ,1, 2)
+        TopicE.variable.set(OPTIONS[0])
+        # TopicE = wd.EntryWidget(self.root, 1, 4, "Topic")
         TopicE.config(width = 50)
 
         #time stamp for the new notes Student Comments

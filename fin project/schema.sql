@@ -1,4 +1,4 @@
-==create table students(
+create table students(
   ID varchar(50),
   first varchar(50) not null,
   last varchar(50) not null,
@@ -19,4 +19,8 @@ create table visits(
   recommendations varchar(50000), --reccomendation
   primary key(ID, visit_date, visit_start),
   foreign key(ID) references students
+);
+
+create table topics(
+  topic varchar(50)
 );

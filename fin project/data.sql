@@ -1,4 +1,16 @@
 ---TEST DATA FROM DR. K
+/*topics*/
+insert into topics
+values ('Time management');
+
+insert into topics
+values ('Study Skills');
+
+insert into topics
+values ('WIN');
+
+insert into topics
+values ('Faculty');
 
 /*student*/
 insert into students

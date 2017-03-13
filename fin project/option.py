@@ -1,14 +1,12 @@
 from Tkinter import *
-
+import Database as DB
 # the constructor syntax is:
 # OptionMenu(master, variable, *values)
 
-OPTIONS = [
-    "egg",
-    "bunny",
-    "chicken"
-]
 
+db = DB.Database('cup.db')
+
+OPTIONS = [i[0] for i in db.getTopics()]
 master = Tk()
 
 variable = StringVar(master)

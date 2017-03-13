@@ -64,6 +64,20 @@ class EntryWidget(tk.Entry):
         self.icursor(tk.END) #bring the crusor to the end
         self.xview(tk.END) #bring the view to the end
 
+#entry grid for something
+class OptionsWidget(tk.OptionMenu):
+    'One-line text entry widgets'
+    def __init__(self, master, options, x, y, text=""):
+        # variable = tk.StringVar(master)
+        self.variable = tk.StringVar()
+        tk.OptionMenu.__init__(self, master, self.variable, *options)
+        self.variable.set('')
+        self.grid(column=x, row=y)
+
+    def getVal(self):
+        'Method to get the value of the entry'
+        return self.variable.get()
+
 class TextWidget(tk.Text):
     'Multi-line text entry'
     def __init__(self, master, x, y, w, h,text = "", sbx_pos = 2):

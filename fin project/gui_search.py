@@ -29,7 +29,8 @@ class gui_search:
 
         #Topic
         topic_label = wd.LabelWidget(self.root, 0, 2, "Topic")
-        topic_bar = wd.EntryWidget(self.root, 1, 2, "")
+        OPTIONS = [i[0] for i in db.getTopics()]
+        topic_bar = wd.OptionsWidget(self.root, OPTIONS ,1, 2)
         topic_bar.grid(columnspan=3)
         topic_bar.config(width=20)
 
