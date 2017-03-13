@@ -33,8 +33,10 @@ class NewVisit:
         idE.config(width = 30)
 
         #Entries: to the right of the window
-        dateE = wd.EntryWidget(self.root, 1, 1, "YYYY-MM-DD")
-        startE = wd.EntryWidget(self.root, 1, 2, "HH:MM")
+        timedate = db.getTimeStamp()
+
+        dateE = wd.EntryWidget(self.root, 1, 1, timedate[0:9])
+        startE = wd.EntryWidget(self.root, 1, 2, timedate[10:])
         #check button for the show
         showVar = tk.StringVar()
         showE = tk.Checkbutton(self.root, variable=showVar, onvalue="yes", offvalue = "no")

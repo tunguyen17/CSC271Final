@@ -1,4 +1,4 @@
-create table students(
+==create table students(
   ID varchar(50),
   first varchar(50) not null,
   last varchar(50) not null,
